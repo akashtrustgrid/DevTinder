@@ -1,12 +1,16 @@
 const express = require("express");
-const { userAuth } = require("./utils/middleware");
+const connectDB = require("./config/database");
+const { userAuth } = require("./middleware/auth");
 
 const app = express();
 
-app.use("/user", userAuth, (req, res) => {
-  res.send("You can access Dashboard!");
-});
-
-app.listen(3000, () => {
-  console.log("server is started on port 3000...");
-});
+connectDB()
+  .then(() => {
+    console.log("Database connected!");
+    app.listen(3000, () => {
+      console.log("server is started on port 3000...");
+    });
+  })
+  .catch((err) => {
+    console.log("Database error:", err);
+  });

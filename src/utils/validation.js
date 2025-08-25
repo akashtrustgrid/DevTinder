@@ -33,13 +33,8 @@ const validateLoginUser = (req) => {
   if (!emailId) {
     throw new Error("Email Id is required");
   }
-  if (!validator.isEmail(emailId.trim())) {
-    throw new Error("Email Id is not valid");
-  }
-  if (!validator.isStrongPassword(password)) {
-    throw new Error(
-      "Password must contain alphanumeric, capital letters and special characters"
-    );
+  if (!password) {
+    throw new Error("Password is required");
   }
 };
 

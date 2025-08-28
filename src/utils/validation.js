@@ -38,6 +38,19 @@ const validateLoginUser = (req) => {
   }
 };
 
+const validateForgotPassword = async (req) => {
+  if (!req.body) {
+    throw new Error("Body is required");
+  }
+  const { currentPassword, password } = req.body;
+  if (!password) {
+    throw new Error("Password is required");
+  }
+  if (!currentPassword) {
+    throw new Error("Current Password is required");
+  }
+};
+
 const validateUserProfile = (req) => {
   if (!req.body) {
     throw new Error("Body is required");
@@ -61,4 +74,9 @@ const validateUserProfile = (req) => {
   }
 };
 
-module.exports = { validateSignUpUser, validateLoginUser, validateUserProfile };
+module.exports = {
+  validateSignUpUser,
+  validateLoginUser,
+  validateUserProfile,
+  validateForgotPassword,
+};

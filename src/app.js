@@ -13,6 +13,7 @@ app.use(cookieParser());
 app.use("/", require("./routes/auth"));
 app.use("/", require("./routes/profile"));
 app.use("/", require("./routes/request"));
+app.use("/", require("./routes/user"));
 
 app.get("/feed", userAuth, async (req, res) => {
   const users = await User.find({}).exec();

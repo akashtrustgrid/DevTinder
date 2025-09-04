@@ -17,14 +17,24 @@ authRouter.post("/signup", async (req, res) => {
     const { firstName, lastName, emailId, password } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
     const user = new User({
-      firstName: firstName.trim().toLowerCase(),
-      lastName: lastName.trim().toLowerCase(),
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
       emailId: emailId.trim().toLowerCase(),
       password: passwordHash,
     });
 
-    await user.save();
-    res.send("signup successfully!");
+    const currentUser = await user.save();
+
+    const token = jwt.sign({ id: user._id }, "Akash@1991$007", {
+      expiresIn: "1d",
+    });
+    console.log("token: ", token);
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+
+    res.json({ message: "signup successfully!", data: currentUser });
   } catch (err) {
     console.log(err.message);
 
@@ -32,7 +42,7 @@ authRouter.post("/signup", async (req, res) => {
   }
 });
 
-authRouter.get("/login", async (req, res) => {
+authRouter.post("/login", async (req, res) => {
   try {
     validateLoginUser(req);
     const { emailId, password } = req.body;
@@ -53,14 +63,14 @@ authRouter.get("/login", async (req, res) => {
     res.cookie("token", token, {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     });
-    res.send("login successfully!");
+    res.json({ message: "login successfully!", data: user });
   } catch (err) {
     console.log(err.message);
     res.status(400).send("ERROR : " + err.message);
   }
 });
 
-authRouter.get("/logout", (req, res) => {
+authRouter.post("/logout", (req, res) => {
   res.clearCookie("token");
   res.send("logout successfully!");
 });

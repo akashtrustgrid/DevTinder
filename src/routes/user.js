@@ -4,6 +4,16 @@ const { userAuth } = require("../middleware/userAuth");
 const ConnectionRequest = require("../models/connectionRequests");
 const User = require("../models/user");
 
+const SAFE_DATA = [
+  "firstName",
+  "lastName",
+  "age",
+  "gender",
+  "imageUrl",
+  "aboutMe",
+  "skills",
+];
+
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
@@ -11,7 +21,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     const connectionRequests = await ConnectionRequest.find({
       toUserId: loggedInUser._id,
       status: "intrested",
-    }).populate("fromUserId", ["firstName", "lastName"]);
+    }).populate("fromUserId", SAFE_DATA);
 
     res.json({ message: "Connection requests", data: connectionRequests });
   } catch (error) {
@@ -26,7 +36,7 @@ userRouter.get("/user/requests/pending", userAuth, async (req, res) => {
     const connectionRequests = await ConnectionRequest.find({
       fromUserId: loggedInUser._id,
       status: "intrested",
-    }).populate("toUserId", ["firstName", "lastName"]);
+    }).populate("toUserId", SAFE_DATA);
 
     res.json({ message: "Connection requests", data: connectionRequests });
   } catch (error) {
@@ -44,8 +54,8 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         { toUserId: loggedInUser._id, status: "accepted" },
       ],
     })
-      .populate("fromUserId", ["firstName", "lastName"])
-      .populate("toUserId", ["firstName", "lastName"]);
+      .populate("fromUserId", SAFE_DATA)
+      .populate("toUserId", SAFE_DATA);
     const data = connectionRequests.map((conn) => {
       if (conn.fromUserId.equals(loggedInUser._id)) {
         return conn.toUserId;
@@ -85,7 +95,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       { _id: { $nin: [...notAllowedUsers] } },
     ],
   })
-    .select(["firstName", "lastName"])
+    .select(SAFE_DATA)
     .skip(skip)
     .limit(limit);
   res.json({ message: "Feeds", data: users });

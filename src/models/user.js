@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       minLength: 4,
       maxLength: 20,
-      lowercase: true,
       trim: true,
     },
     lastName: { type: String },
@@ -18,9 +17,12 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    imageUrl: { type: String },
+    skills: { type: [String] },
+    aboutMe: { type: String },
     password: { type: String, required: true },
     age: { type: Number, min: 18 },
-    gender: { type: String, enum: ["male", "female", "other"] },
+    gender: { type: String, enum: ["Male", "Female", "Other"] },
   },
   { timestamps: true }
 );

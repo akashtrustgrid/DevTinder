@@ -55,7 +55,16 @@ const validateUserProfile = (req) => {
   if (!req.body) {
     throw new Error("Body is required");
   }
-  const isAllowedKeys = ["firstName", "lastName", "about", "age", "gender"];
+  const isAllowedKeys = [
+    "firstName",
+    "lastName",
+    "about",
+    "age",
+    "gender",
+    "skills",
+    "aboutMe",
+    "imageUrl",
+  ];
   Object.keys(req.body).forEach((key) => {
     if (!isAllowedKeys.includes(key)) {
       throw new Error("Invalid Data");

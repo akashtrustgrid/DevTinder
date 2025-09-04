@@ -3,9 +3,18 @@ const connectDB = require("./config/database");
 const User = require("./models/user");
 const cookieParser = require("cookie-parser");
 const { userAuth } = require("./middleware/userAuth");
+var cors = require("cors");
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // For parsing application/json
 app.use(express.json());
 app.use(cookieParser());

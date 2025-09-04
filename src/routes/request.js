@@ -17,7 +17,7 @@ requestRouter.post(
         throw new Error("User not found");
       }
 
-      const allowedStatus = ["intrested", "ignored"];
+      const allowedStatus = ["interested", "ignored"];
       if (!allowedStatus.includes(status)) {
         throw new Error("Invalid " + status + " status");
       }
@@ -45,7 +45,7 @@ requestRouter.post(
           " " +
           status +
           " " +
-          (status === "intrested" ? "in " : "to ") +
+          (status === "interested" ? "in " : "to ") +
           toUser.firstName,
         data,
       });
@@ -71,7 +71,7 @@ requestRouter.post(
       const connectionRequest = await ConnectionRequest.findOne({
         _id: requestId,
         toUserId: loggedInUser._id,
-        status: "intrested",
+        status: "interested",
       });
 
       if (!connectionRequest) {

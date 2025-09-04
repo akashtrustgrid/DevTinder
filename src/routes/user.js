@@ -20,7 +20,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
 
     const connectionRequests = await ConnectionRequest.find({
       toUserId: loggedInUser._id,
-      status: "intrested",
+      status: "interested",
     }).populate("fromUserId", SAFE_DATA);
 
     res.json({ message: "Connection requests", data: connectionRequests });
@@ -35,7 +35,7 @@ userRouter.get("/user/requests/pending", userAuth, async (req, res) => {
 
     const connectionRequests = await ConnectionRequest.find({
       fromUserId: loggedInUser._id,
-      status: "intrested",
+      status: "interested",
     }).populate("toUserId", SAFE_DATA);
 
     res.json({ message: "Connection requests", data: connectionRequests });

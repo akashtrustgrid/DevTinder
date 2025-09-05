@@ -25,7 +25,7 @@ authRouter.post("/signup", async (req, res) => {
 
     const currentUser = await user.save();
 
-    const token = jwt.sign({ id: user._id }, "Akash@1991$007", {
+    const token = jwt.sign({ id: user._id }, process.env, {
       expiresIn: "1d",
     });
     console.log("token: ", token);
@@ -55,7 +55,7 @@ authRouter.post("/login", async (req, res) => {
     if (!isMatch) {
       throw new Error("Invalid credentials!");
     }
-    const token = jwt.sign({ id: user._id }, "Akash@1991$007", {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
     console.log("token: ", token);
@@ -96,7 +96,7 @@ authRouter.post("/forgotPassword", userAuth, async (req, res) => {
     user.password = passwordHash;
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, "Akash@1991$007", {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
     console.log("token: ", token);

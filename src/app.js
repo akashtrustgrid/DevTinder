@@ -4,12 +4,13 @@ const User = require("./models/user");
 const cookieParser = require("cookie-parser");
 const { userAuth } = require("./middleware/userAuth");
 var cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 
 app.use(
   cors({
-    origin: "http://3.106.202.90",
+    origin: process.env.SERVER_ADDRESS,
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -33,8 +34,8 @@ app.get("/feed", userAuth, async (req, res) => {
 connectDB()
   .then(() => {
     console.log("Database connected!");
-    app.listen(3000, () => {
-      console.log("server is started on port 3000...");
+    app.listen(process.env.PORT, () => {
+      console.log("server is started on port...");
     });
   })
   .catch((err) => {
